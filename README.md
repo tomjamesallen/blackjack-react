@@ -75,7 +75,7 @@ See `gulpfile.js` for more detail on which sub-tasks each top level task is runn
 ______
 
 Tom Allen
-[tomjamesallen.co.uk](tomjamesallen.co.uk)
+[tomjamesallen.co.uk](http://tomjamesallen.co.uk)
 tomjamesallenweb@gmail.com
 
 
