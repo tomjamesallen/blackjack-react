@@ -12,7 +12,7 @@ requireDir('./tasks');
 // 
 // Directory structure is as follows:
 // - src/
-//    - scss/
+//    - less/
 //    - js/
 //    - index.html
 // - dist/
@@ -48,7 +48,7 @@ gulp.task('clean', function () {
 });
 
 // Compile static assets.
-gulp.task('compile-assets', ['compile:jshint', 'compile:js', 'compile:html', 'compile:public', 'compile:scss']);
+gulp.task('compile-assets', ['compile:jshint', 'compile:js', 'compile:html', 'compile:public', 'compile:less']);
 
 // Build tasks.
 gulp.task('build:development', function (callback) {
@@ -65,7 +65,7 @@ gulp.task('build:production', function (callback) {
 gulp.task('build', ['build:production']);
 
 // Watch task (will also do initial build).
-gulp.task('watch', ['compile:watch:jshint', 'watch:js', 'watch:html', 'watch:public', 'watch:scss']);
+gulp.task('watch', ['compile:watch:jshint', 'watch:js', 'watch:html', 'watch:public', 'watch:less']);
 
 // Fake live environement.
 gulp.task('faux-staging', function(callback) {
@@ -87,11 +87,11 @@ require('gulp-react-tools')(gulp, {
   componentTemplate: './templates/Component.react.js',
   componentStyleTemplate: './templates/component.css',
   componentDir: './src/js/components/',
-  componentStylesDir: './src/scss/',
+  componentStylesDir: './src/less/',
 
   componentName: '{{COMPONENT}}.react.js',
-  componentStylesName: '_components.{{COMPONENT_DASHED}}.scss',
+  componentStylesName: '_components.{{COMPONENT_DASHED}}.less',
 
   appendStyleImportTemplate: "// @import 'components.{{COMPONENT_DASHED}}\n",
-  appendStyleImportTo: './src/scss/main.scss'
+  appendStyleImportTo: './src/less/main.less'
 });

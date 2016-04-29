@@ -1,0 +1,42 @@
+.hand {
+
+  .clearfix();
+
+  margin-right: @unit*5;
+
+  @media @tablet {
+    margin-right: @unit*3;
+  }
+
+  @media @desktop {
+    margin-right: 0;
+  }
+
+  &__card {
+    position: relative;
+    float: left;
+    width: auto;
+    margin-right: -@unit*4;
+
+    @media @tablet {
+      margin-right: -@unit*2;
+    }
+
+    @media @desktop {
+      margin-right: @unit;
+    }
+
+    .pos-top-loop (@i) when (@i > 0) {
+      &:nth-child(@{i}) {
+        @multiplier: @i - 1;
+        top: @multiplier * 2px;
+
+        @media @desktop {
+          top: 0;
+        }
+      }
+      .pos-top-loop(@i - 1);
+    }
+    .pos-top-loop(7);
+  }
+}

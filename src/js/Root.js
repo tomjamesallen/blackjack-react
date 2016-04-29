@@ -5,9 +5,7 @@ import { Router, Route, IndexRoute } from 'react-router'
 
 // import RouteValidator from './utils/RouteValidator'
 
-import App from './components/App.react'
-import Home from './components/Home.react'
-import About from './components/About.react'
+import BlackjackApp from './components/BlackjackApp.react'
 
 export default class Root extends Component {
   static propTypes = {
@@ -18,9 +16,8 @@ export default class Root extends Component {
     const { history } = this.props
     return (
       <Router history={history}>
-        <Route name='home' path='/' component={App}>
-          <IndexRoute component={Home}/>
-          <Route name='about' path='/about' component={About}/>
+        <Route name='home' path='/' component={BlackjackApp}>
+          <IndexRoute/>
         </Route>
       </Router>
     )

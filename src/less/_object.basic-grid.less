@@ -1,0 +1,21 @@
+.grid {
+
+  .clearfix();
+
+  padding-left: @gutter;
+
+  @left-col: @card-col * 2;
+
+  &__col {
+    float: left;
+    padding-right: @gutter;
+
+    &--left {
+      width: @left-col;
+    }
+
+    &--right {
+      width: ~"calc(100% - @{left-col})";
+    }
+  }    
+}

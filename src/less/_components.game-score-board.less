@@ -1,0 +1,50 @@
+.game-score-board {
+
+  // Private mixins.
+  .player-cell-colors() {
+    background-color: @color-dark;
+    color: @color-gold;
+  }
+
+  .dealer-cell-colors() {
+    background-color: @color-gold;
+    color: @color-dark;
+  }
+
+  &__heading {
+    font-size: @h4;
+  }
+
+  &__table {
+
+  }  
+
+  &__table-cell {
+    padding-left: @unit / 2;
+    padding-right: @unit / 2;
+    text-align: right;
+  }
+
+  &__table-heading {
+    font-size: @p;
+    padding-top: @unit / 2;
+
+    &--player {
+      .player-cell-colors();
+    }
+    &--dealer {
+      .dealer-cell-colors();
+    }
+  }
+
+  &__table-score {
+    font-size: @h2;
+
+    &--player {
+      .player-cell-colors();
+    }
+    &--dealer {
+      .dealer-cell-colors();
+    }
+  }
+}

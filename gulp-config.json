@@ -18,10 +18,10 @@
     "outputFileName": "index.html",
     "outputDir": "./dist/"
   },
-  "scss": {
-    "src": "./src/scss/main.scss",
+  "less": {
+    "src": "./src/less/main.less",
     "toWatch": [
-      "src/scss/**"
+      "src/less/**"
     ],
     "outputFileName": "main.css",
     "outputDir": "./dist/css"

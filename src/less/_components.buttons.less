@@ -1,0 +1,26 @@
+.btn {
+
+  display: inline-block;
+  font-size: @h4;
+  background-color: @color-gold;
+  border-radius: 2px;
+  padding: @unit/4 @unit/2;
+  margin-right: @unit/2;
+  box-shadow: @shadow;
+  cursor: pointer;
+  border: none;
+  outline: none;
+
+  &:active {
+    transform: translate(1px, 1px);
+  }
+
+  &--block {
+    display: block;
+  }
+
+  &--secondary {
+    background-color: @color-dark;
+    color: @color-gold;
+  }
+}

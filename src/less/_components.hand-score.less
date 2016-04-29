@@ -1,0 +1,23 @@
+.hand-score {
+
+  display: table;
+  min-height: @card-height;
+
+  &__score {
+    display: table-cell;
+    vertical-align: bottom;
+    font-size: @h2;
+
+    &--player {
+      vertical-align: top;
+    }
+
+    &--blackjack {
+      color: @color-gold;
+    }
+  }
+
+  &__note {
+    font-size: @p;
+  }
+}
