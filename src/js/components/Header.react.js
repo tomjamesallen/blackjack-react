@@ -1,38 +1,38 @@
-var React = require('react');
+import React, { PropTypes } from 'react'
 
-var GameScoreBoard = require('./GameScoreBoard.react');
-var RoundIndicator = require('./RoundIndicator.react');
+import GameScoreBoard from './GameScoreBoard.react'
+import RoundIndicator from './RoundIndicator.react'
 
-module.exports = React.createClass({
+let Header = React.createClass({
+  propTypes: {
+    state: PropTypes.object.isRequired
+  },
 
-  /**
-   * @return {object}
-   */
   render() {
+    const { game } = this.props.state
 
     return (
-      <header className="header grid">
-        
-        <div className="grid__col grid__col--left">
-          <div className="logo">
-            <h1 className="logo__h1">
+      <header className='header grid'>
+        <div className='grid__col grid__col--left'>
+          <div className='logo'>
+            <h1 className='logo__h1'>
               <img
-                className="logo__img"
-                src="/img/blackjack-logo.svg"
-                alt="BlackJack"/>
+                className='logo__img'
+                src='/img/blackjack-logo.svg'
+                alt='BlackJack' />
             </h1>
           </div>
-          <RoundIndicator game={this.props.state.game}/>          
+          <RoundIndicator game={game} />
         </div>
 
-        <div className="grid__col grid__col--right">
-          <div className="pad-left pad-left--2-cards">
-            <GameScoreBoard game={this.props.state.game}/>
+        <div className='grid__col grid__col--right'>
+          <div className='pad-left pad-left--2-cards'>
+            <GameScoreBoard game={game} />
           </div>
         </div>
-        
       </header>
-    );
+    )
   }
+})
 
-});
+module.exports = Header

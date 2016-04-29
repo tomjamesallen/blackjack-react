@@ -1,62 +1,72 @@
-var React = require('react');
+import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 
-var classNames = require('classnames');
+import RoundStages from '../constants/RoundStages'
 
-var RoundStages = require('../constants/RoundStages');
+let HandScore = React.createClass({
+  propTypes: {
+    handScore: PropTypes.object,
+    actor: PropTypes.string.isRequired,
+    stage: PropTypes.oneOfType([
+      PropTypes.string.isRequired,
+      PropTypes.bool.isRequired
+    ])
+  },
 
-module.exports = React.createClass({
-  
-  /**
-   * @return {object}
-   */
   render() {
+    const {
+      actor,
+      handScore,
+      stage
+    } = this.props
 
-    var actor = this.props.actor;
-    var handScore = this.props.handScore;
-    var score;
-    var scoreNote;
-    var scoreText;
+    let score
+    let scoreNote
+    let scoreText
 
     if (handScore) {
-      if (!(this.props.actor === 'dealer' &&
-           (this.props.stage === RoundStages.INITIAL_DEAL ||
-            this.props.stage === RoundStages.PLAYER_TURN))) {
-        
+      if (!(actor === 'dealer' &&
+           (stage === RoundStages.INITIAL_DEAL ||
+            stage === RoundStages.PLAYER_TURN))
+      ) {
         if (handScore.blackjack) {
-          score = 'Blackjack!';
+          score = 'Blackjack!'
         }
         else if (!handScore.bust) {
-          score = handScore.score;
+          score = handScore.score
         }
         else if (handScore.bustScore) {
-          score = handScore.bustScore;
+          score = handScore.bustScore
         }
 
         if (handScore.bust) {
-          scoreNote = <span className="hand-score__note">bust!</span>;
+          scoreNote = <span className='hand-score__note'>bust!</span>
         }
 
         if (handScore.soft && !handScore.blackjack) {
-          scoreNote = <span className="hand-score__note">soft</span>;
+          scoreNote = <span className='hand-score__note'>soft</span>
         }
       }
     }
 
     if (score) {
       scoreText = (
-        <h2 className={classNames(
-          'hand-score__score',
-          'hand-score__score--' + actor,
-          {'hand-score__score--blackjack': handScore.blackjack}
-        )}>{score}{scoreNote}</h2>
-      );
+        <h2
+          className={classNames(
+            'hand-score__score',
+            'hand-score__score--' + actor,
+            {'hand-score__score--blackjack': handScore.blackjack}
+          )}
+        >{score}{scoreNote}</h2>
+      )
     }
 
     return (
-      <div className="hand-score">
+      <div className='hand-score'>
         {scoreText}
       </div>
-    );
+    )
   }
+})
 
-});
+module.exports = HandScore

@@ -1,40 +1,38 @@
-var React = require('react');
+import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 
-var classNames = require('classnames');
+let Pack = React.createClass({
+  propTypes: {
+    remainingCardsInDeck: PropTypes.number.isRequired
+  },
 
-module.exports = React.createClass({
-
-  /**
-   * @return {object}
-   */
   render() {
-
-    var packEmpty = this.props.remainingCardsInDeck === 0;
-    var packImg;
-
-    var classes = classNames(
+    const packEmpty = this.props.remainingCardsInDeck === 0
+    const classes = classNames(
       'pack',
       {'pack--empty': packEmpty}
-    );
+    )
 
+    let packImg
     if (!packEmpty) {
       packImg = (
-        <div className="card card--concealed">
+        <div className='card card--concealed'>
           <img
-            className="card__img"
-            src="/img/cards/back.svg" />
+            className='card__img'
+            src='/img/cards/back.svg' />
         </div>
-      );
+      )
     }
 
     return (
       <div className={classes}>
         {packImg}
-        <div className="pack__info">
-          <p className="pack__card-count">{this.props.remainingCardsInDeck} cards</p>
+        <div className='pack__info'>
+          <p className='pack__card-count'>{this.props.remainingCardsInDeck} cards</p>
         </div>
       </div>
-    );
+    )
   }
+})
 
-});
+module.exports = Pack

@@ -1,56 +1,67 @@
 import React, { PropTypes } from 'react'
-import classNames from 'classnames'
 
 import RoundStages from '../constants/RoundStages'
-
 import Card from './Card.react'
 
 let Hand = React.createClass({
-  
-  /**
-   * @return {object}
-   */
+  propTypes: {
+    handScore: PropTypes.object,
+    hand: PropTypes.array.isRequired,
+    actor: PropTypes.string.isRequired,
+    stage: PropTypes.oneOfType([
+      PropTypes.string.isRequired,
+      PropTypes.bool.isRequired
+    ])
+  },
+
   render() {
-    if (!this.props.handScore) return null;
+    if (!this.props.handScore) return null
 
-    var that = this;
-    var lowAces = this.props.handScore.lowAces;
-    var cards = [];
+    const {
+      hand,
+      handScore,
+      actor,
+      stage
+    } = this.props
 
-    this.props.hand.forEach(function (cardData, i) {
-      var lowAce = false;
-      var concealed = false;
+    let { lowAces } = handScore
+    let cards = []
+
+    hand.forEach((cardData, i) => {
+      let lowAce = false
+      let concealed = false
 
       // If it's the dealer's hand and we're at the initial deal or player's
       // turn, conceal all but the first card in the hand.
-      if (that.props.actor === 'dealer' &&
-         (that.props.stage === RoundStages.INITIAL_DEAL ||
-          that.props.stage === RoundStages.PLAYER_TURN) &&
-          i !== 0) {
-        concealed = true;
-      }
-      
-      if (lowAces && cardData.face === 'a') {
-        lowAce = true;
-        lowAces --;
+      if (actor === 'dealer' &&
+         (stage === RoundStages.INITIAL_DEAL ||
+          stage === RoundStages.PLAYER_TURN) &&
+          i !== 0
+      ) {
+        concealed = true
       }
 
-      var card = (
-        <div className="hand__card" key={i}>
+      if (lowAces && cardData.face === 'a') {
+        lowAce = true
+        lowAces--
+      }
+
+      const card = (
+        <div className='hand__card' key={i}>
           <Card
             data={cardData}
             lowAce={lowAce}
-            concealed={concealed}/>
+            concealed={concealed} />
         </div>
-      );
-      cards.push(card);
-    });
+      )
+      cards.push(card)
+    })
 
     return (
-      <div className="hand">
+      <div className='hand'>
         {cards}
       </div>
-    );
+    )
   }
 })
 
