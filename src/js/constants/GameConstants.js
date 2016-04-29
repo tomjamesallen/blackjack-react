@@ -1,6 +1,6 @@
 import keyMirror from 'keymirror'
 
-module.exports = keyMirror({
+export default keyMirror({
   NEW_GAME: null,
   NEW_ROUND: null,
   PLAYER_ACTION_HIT: null,

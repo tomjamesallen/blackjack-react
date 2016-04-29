@@ -4,7 +4,7 @@ import titleCase from '../helpers/titleCase'
 import GameActions from '../actions/GameActions'
 import RoundStages from '../constants/RoundStages'
 
-module.exports = React.createClass({
+let Messages = React.createClass({
   propTypes: {
     state: PropTypes.object.isRequired
   },
@@ -140,3 +140,5 @@ module.exports = React.createClass({
     GameActions.playerStand()
   }
 })
+
+export default Messages

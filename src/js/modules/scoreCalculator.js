@@ -97,4 +97,4 @@ function scoreCalculator(hand) {
   }
 }
 
-module.exports = scoreCalculator
+export default scoreCalculator

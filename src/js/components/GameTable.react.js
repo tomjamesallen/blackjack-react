@@ -49,4 +49,4 @@ let GameTable = React.createClass({
   }
 })
 
-module.exports = GameTable
+export default GameTable

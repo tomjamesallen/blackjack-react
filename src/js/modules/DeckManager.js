@@ -215,7 +215,7 @@ function DeckManager(options) {
   return api._init()
 }
 
-module.exports = DeckManager
+export default DeckManager
 
 // /////////////////////////////////////////////////////////////////////////////
 // A deck looks like this.

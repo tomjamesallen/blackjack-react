@@ -51,4 +51,4 @@ var APP = React.createClass({
   }
 })
 
-module.exports = APP
+export default APP

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   'a': 'Ace',
   '1': '1',
   '2': '2',

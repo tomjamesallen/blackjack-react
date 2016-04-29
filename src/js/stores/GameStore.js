@@ -473,4 +473,4 @@ AppDispatcher.register((action) => {
   }
 })
 
-module.exports = GameStore
+export default GameStore

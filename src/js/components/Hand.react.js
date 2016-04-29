@@ -65,4 +65,4 @@ let Hand = React.createClass({
   }
 })
 
-module.exports = Hand
+export default Hand

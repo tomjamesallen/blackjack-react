@@ -38,4 +38,4 @@ function scoreComparator(hand1ScoreData, hand2ScoreData) {
   return winner
 }
 
-module.exports = scoreComparator
+export default scoreComparator

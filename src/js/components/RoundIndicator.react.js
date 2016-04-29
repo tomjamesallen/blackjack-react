@@ -24,4 +24,4 @@ let RoundIndicator = React.createClass({
   }
 })
 
-module.exports = RoundIndicator
+export default RoundIndicator

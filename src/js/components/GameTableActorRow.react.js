@@ -62,4 +62,4 @@ let GameTableActorRow = React.createClass({
   }
 })
 
-module.exports = GameTableActorRow
+export default GameTableActorRow

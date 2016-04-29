@@ -55,4 +55,4 @@ let GameScoreBoard = React.createClass({
   }
 })
 
-module.exports = GameScoreBoard
+export default GameScoreBoard

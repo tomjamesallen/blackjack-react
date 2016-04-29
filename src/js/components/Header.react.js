@@ -35,4 +35,4 @@ let Header = React.createClass({
   }
 })
 
-module.exports = Header
+export default Header

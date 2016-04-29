@@ -19,4 +19,4 @@ let Display = React.createClass({
   }
 })
 
-module.exports = Display
+export default Display

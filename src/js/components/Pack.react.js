@@ -35,4 +35,4 @@ let Pack = React.createClass({
   }
 })
 
-module.exports = Pack
+export default Pack

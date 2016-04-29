@@ -32,4 +32,4 @@ var GameActions = {
   }
 }
 
-module.exports = GameActions
+export default GameActions

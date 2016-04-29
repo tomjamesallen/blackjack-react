@@ -69,4 +69,4 @@ let HandScore = React.createClass({
   }
 })
 
-module.exports = HandScore
+export default HandScore
