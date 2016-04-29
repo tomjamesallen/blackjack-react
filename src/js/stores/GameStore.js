@@ -10,45 +10,46 @@
  */
 
 // App imports.
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
+import AppDispatcher from '../dispatcher/AppDispatcher'
+import { EventEmitter } from 'events'
 
 // Constants.
-var AppConstants = require('../constants/AppConstants');
-var GameConstants = require('../constants/GameConstants');
-var ScoreConstants = require('../constants/ScoreConstants');
-var RoundStages = require('../constants/RoundStages');
-var GamePlay = require('../constants/GamePlay');
+import AppConstants from '../constants/AppConstants'
+import GameConstants from '../constants/GameConstants'
+import ScoreConstants from '../constants/ScoreConstants'
+import RoundStages from '../constants/RoundStages'
+import GamePlay from '../constants/GamePlay'
 
 // Helper.
-var assign = require('object-assign');
+import assign from 'object-assign'
 
 
 // Create a deckManager instance.
-var deckManager = require('../modules/DeckManager')();
+import DeckManager from '../modules/DeckManager'
+let deckManager = DeckManager()
 
 // Get scoreCalculator.
-var scoreCalculator = require('../modules/scoreCalculator');
+import scoreCalculator from '../modules/scoreCalculator'
 
 // Get scoreComparator.
-var scoreComparator = require('../modules/scoreComparator');
+import scoreComparator from '../modules/scoreComparator'
 
 // Game play options.
 // In future these could be loaded from a separate store rather than being
 // constants.
-const dealerHitOnSoft17 = GamePlay.DEALER_HIT_ON_SOFT_17;
-const roundsPerGame = GamePlay.ROUNDS_PER_GAME;
+const dealerHitOnSoft17 = GamePlay.DEALER_HIT_ON_SOFT_17
+const roundsPerGame = GamePlay.ROUNDS_PER_GAME
 
 // App globals.
-const screenChangeDelay = AppConstants.SCREEN_CHANGE_DELAY;
+const screenChangeDelay = AppConstants.SCREEN_CHANGE_DELAY
 
 // Round scoring.
-const pointsForBlackjack = ScoreConstants.BLACKJACK_POINTS;
-const pointsForWin = ScoreConstants.WIN_POINTS;
-const pointsForDraw = ScoreConstants.DRAW_POINTS;
+const pointsForBlackjack = ScoreConstants.BLACKJACK_POINTS
+const pointsForWin = ScoreConstants.WIN_POINTS
+const pointsForDraw = ScoreConstants.DRAW_POINTS
 
 // Module constants.
-const CHANGE_EVENT = 'change';
+const CHANGE_EVENT = 'change'
 
 /**
  * Return default game state object.
@@ -84,12 +85,12 @@ function returnDefaultRoundState() {
     stage: false,
     transitioningStage: false,
 
-    roundWinner: null,
+    roundWinner: null
   }
-};
+}
 
 // Declare state variable in requisite scope.
-var state;
+let state
 
 /**
  * Set the state to the default game and round states.
@@ -98,30 +99,29 @@ function setDefaultState() {
   state = {
     game: returnDefaultGameState(),
     round: returnDefaultRoundState()
-  };
-};
+  }
+}
 
 // Set default state immediately.
-setDefaultState();
+setDefaultState()
 
 /**
  * Start a new game.
  */
 function newGame() {
-
   // If We have a round stage and the game isn't over, then don't start a new
   // game.
-  if (state.round.stage && !state.game.gameOver) return;
+  if (state.round.stage && !state.game.gameOver) return
 
   // Set default game and round states.
-  setDefaultState();
+  setDefaultState()
 
   // Create a new deck.
-  newDeck();
+  newDeck()
 
   // Start a new round.
-  newRound();
-};
+  newRound()
+}
 
 /**
  * Create a new deck.
@@ -131,18 +131,18 @@ function newDeck() {
   // in the game. The maximum number of cards we should need for a round is
   // approx 20, although statistically lower, so (52 * roundsPerGame / 3)
   // rounded up should be enough.
-  var requiredPacks = Math.ceil(roundsPerGame / 3);
+  const requiredPacks = Math.ceil(roundsPerGame / 3)
 
-  // Create the new deck with requisite number of packs. 
-  deckManager.newDeck(requiredPacks);
+  // Create the new deck with requisite number of packs.
+  deckManager.newDeck(requiredPacks)
 
   // Save the packsInPlay to state.
-  state.game.packsInPlay = requiredPacks;
+  state.game.packsInPlay = requiredPacks
 
   // Save the remainingCardsInDeck to state.
   // We will also update this whenever a card is dealt.
-  state.game.remainingCardsInDeck = deckManager.remainingCardsInDeck();
-};
+  state.game.remainingCardsInDeck = deckManager.remainingCardsInDeck()
+}
 
 /**
  * Start a new round.
@@ -151,66 +151,64 @@ function newRound() {
   // If we've already reached the roundsPerGame then end the game.
   // This is just to catch exceptions, the newRound action shouldn't be
   // accessible once the roundsPerGame count has been reached.
-  if (state.game.currentRound >= state.game.roundsPerGame) return;
+  if (state.game.currentRound >= state.game.roundsPerGame) return
 
   // Get the previous round and increment.
-  var round = state.game.currentRound + 1;
+  const round = state.game.currentRound + 1
 
   // Create empty hands.
-  var playerHand = [];
-  var dealerHand = [];
+  let playerHand = []
+  let dealerHand = []
 
   // Initial deal, two cards to both player and dealer.
-  playerHand.push(deckManager.dealCard());
-  dealerHand.push(deckManager.dealCard());
-  playerHand.push(deckManager.dealCard());
-  dealerHand.push(deckManager.dealCard());
+  playerHand.push(deckManager.dealCard())
+  dealerHand.push(deckManager.dealCard())
+  playerHand.push(deckManager.dealCard())
+  dealerHand.push(deckManager.dealCard())
 
   // Update remainingCardsInDeck.
-  state.game.remainingCardsInDeck = deckManager.remainingCardsInDeck();
+  state.game.remainingCardsInDeck = deckManager.remainingCardsInDeck()
 
   // Get hand scores.
-  var playerHandScore = scoreCalculator(playerHand);
-  var dealerHandScore = scoreCalculator(dealerHand);
+  const playerHandScore = scoreCalculator(playerHand)
+  const dealerHandScore = scoreCalculator(dealerHand)
 
   // Combine default sate with the updates.
   state.round = assign(returnDefaultRoundState(), {
-    playerHand: playerHand,
-    dealerHand: dealerHand,
+    playerHand,
+    dealerHand,
 
-    playerHandScore: playerHandScore,
-    dealerHandScore: dealerHandScore,
+    playerHandScore,
+    dealerHandScore,
 
-    stage: RoundStages.INITIAL_DEAL,
-  });
+    stage: RoundStages.INITIAL_DEAL
+  })
 
   // Update the current round.
-  state.game.currentRound = round;
+  state.game.currentRound = round
 
   // Set transitioningStage to true so that we can block any duplicate actions
   // whilst we're waiting for a timer or animation.
-  state.round.transitioningStage = true;
+  state.round.transitioningStage = true
 
   // We've updated all the state that we need to for now, so emit a change. This
   // will trigger the app to re-render.
-  GameStore.emitChange();
+  GameStore.emitChange()
 
   // Delay the next action momentarily to allow the user to see the changes.
-  setTimeout(function() {
-
+  setTimeout(() => {
     // Set transitioning back to false now. The change will be emitted by either
     // the `endRound` function or the `playerTurn` function.
-    state.round.transitioningStage = false;
+    state.round.transitioningStage = false
 
     // If either player or dealer has a blackjack in there initial hand then end
     // the round.
-    if (playerHandScore.blackjack || dealerHandScore.blackjack) endRound();
-    
-    // Otherwise it's the player's turn.
-    else playerTurn();
+    if (playerHandScore.blackjack || dealerHandScore.blackjack) endRound()
 
-  }, screenChangeDelay);
-};
+    // Otherwise it's the player's turn.
+    else playerTurn()
+  }, screenChangeDelay)
+}
 
 /**
  * Start the player's turn.
@@ -218,78 +216,76 @@ function newRound() {
 function playerTurn() {
   // All we do here is set the round stage to the player's turn and emit a
   // change event. The UI can then display the HIT and STAND buttons.
-  state.round.stage = RoundStages.PLAYER_TURN;
-  GameStore.emitChange();
-};
+  state.round.stage = RoundStages.PLAYER_TURN
+  GameStore.emitChange()
+}
 
 /**
  * Player HIT action.
- * 
+ *
  * Triggered by a user interaction.
  */
 function playerHit() {
   // We don't want to do anything here if the round stage is the player's turn
   // or we are currently transitioning.
-  if (state.round.stage !== RoundStages.PLAYER_TURN
-    || state.round.transitioningStage) {
-    return;
+  if (state.round.stage !== RoundStages.PLAYER_TURN ||
+      state.round.transitioningStage) {
+    return
   }
 
   // Get the playerHand.
-  var playerHand = state.round.playerHand;
+  let playerHand = state.round.playerHand
 
   // Push a new card from the deck to the playerHand.
-  playerHand.push(deckManager.dealCard());
-  state.game.remainingCardsInDeck = deckManager.remainingCardsInDeck();
+  playerHand.push(deckManager.dealCard())
+  state.game.remainingCardsInDeck = deckManager.remainingCardsInDeck()
 
   // Calculate the score of the playerHand.
-  var playerHandScore = scoreCalculator(playerHand);
+  const playerHandScore = scoreCalculator(playerHand)
 
   // Update state with new playerHand and playerHandScore.
   state.round = assign(state.round, {
-    playerHand: playerHand,
-    playerHandScore: playerHandScore
-  });
+    playerHand,
+    playerHandScore
+  })
 
   // Set transitioningStage to true so that we can block any duplicate actions
   // whilst we're waiting for a timer or animation.
-  state.round.transitioningStage = true;
+  state.round.transitioningStage = true
 
   // We've updated all the state that we need to for now, so emit a change. This
   // will trigger the app to re-render.
-  GameStore.emitChange();
+  GameStore.emitChange()
 
   // Delay the next action momentarily to allow the user to see the changes.
-  setTimeout(function() {
-
+  setTimeout(() => {
     // Set transitioning back to false now. The change will be emitted by either
     // the `endRound` function or the `playerTurn` function.
-    state.round.transitioningStage = false;
+    state.round.transitioningStage = false
 
     // If the playerHand is bust we end the round, otherwise the player gets
     // another turn.
-    if (playerHandScore.bust) endRound();
-    else playerTurn();
-
-  }, screenChangeDelay);
-};
+    if (playerHandScore.bust) endRound()
+    else playerTurn()
+  }, screenChangeDelay)
+}
 
 /**
  * Player STAND action.
- * 
+ *
  * Triggered by a user interaction.
  */
 function playerStand() {
   // We don't want to do anything here if the round stage is the player's turn
   // or we are currently transitioning.
-  if (state.round.stage !== RoundStages.PLAYER_TURN
-    || state.round.transitioningStage) {
-    return;
+  if (state.round.stage !== RoundStages.PLAYER_TURN ||
+      state.round.transitioningStage) {
+    return
   }
 
   // Call dealerTurn.
-  dealerTurn();
-};
+  dealerTurn()
+}
 
 /**
  * Start the dealer's turn.
@@ -298,189 +294,183 @@ function playerStand() {
  *                after a delay.
  */
 function dealerTurn(firstPass) {
-
   // We allow a first pass where no new card is added to the dealer's hand.
   // This is so that the dealer's hand can be seen, and a pause introduced
   // before the dealer must hit or stand.
-  if (firstPass !== false) firstPass = true;
+  if (firstPass !== false) firstPass = true
 
   // Get the current dealerHand and dealerHandScore.
-  var dealerHand = state.round.dealerHand;
-  var dealerHandScore = state.round.dealerHandScore;
-  var score = dealerHandScore.score;
+  let dealerHand = state.round.dealerHand
+  let dealerHandScore = state.round.dealerHandScore
+  const score = dealerHandScore.score
 
   // Determine whether the dealer has to hit.
-  var dealerMustHit = false;
+  let dealerMustHit = false
   if (score < 17 ||
       (score === 17 && dealerHandScore.soft && dealerHitOnSoft17)) {
-    dealerMustHit = true;
+    dealerMustHit = true
   }
 
   // If dealer must hit then add another card to the dealerHand and
   // recalculate the dealerHandScore.
   if (dealerMustHit && !firstPass) {
-    dealerHand.push(deckManager.dealCard());
-    state.game.remainingCardsInDeck = deckManager.remainingCardsInDeck();
-    
-    dealerHandScore = scoreCalculator(dealerHand);
+    dealerHand.push(deckManager.dealCard())
+    state.game.remainingCardsInDeck = deckManager.remainingCardsInDeck()
+    dealerHandScore = scoreCalculator(dealerHand)
   }
 
   // Update round state.
   state.round = assign(state.round, {
     dealerHand: dealerHand,
     dealerHandScore: dealerHandScore,
-    stage: RoundStages.DEALER_TURN,
-  });
-
+    stage: RoundStages.DEALER_TURN
+  })
 
   // Set transitioningStage to true so that we can block any duplicate actions
   // whilst we're waiting for a timer or animation.
-  state.round.transitioningStage = true;
+  state.round.transitioningStage = true
 
   // We've updated all the state that we need to for now, so emit a change. This
   // will trigger the app to re-render.
-  GameStore.emitChange();
+  GameStore.emitChange()
 
   // If dealer is bust, or dealer doesn't have to hit, then end the round,
   // otherwise repeat the dealer turn.
   if ((dealerHandScore.bust || !dealerMustHit) && !firstPass) {
-
     // Set transitioning back to false now. The change will be emitted by either
     // the `endRound` function or the `playerTurn` function.
-    state.round.transitioningStage = false;
+    state.round.transitioningStage = false
 
-    endRound();
+    endRound()
   }
   else {
     // Delay the next action momentarily to allow the user to see the changes.
-    setTimeout(function() {
-
+    setTimeout(() => {
       // Set transitioning back to false now. The change will be emitted by
       // either the `endRound` function or the `playerTurn` function.
-      state.round.transitioningStage = false;
+      state.round.transitioningStage = false
 
       // Call dealerTurn again.
-      dealerTurn(false);
-
-    }, screenChangeDelay);
+      dealerTurn(false)
+    }, screenChangeDelay)
   }
-};
+}
 
 /**
  * End the current round.
  */
 function endRound() {
   // Compare player and dealer hands.
-  var winningHand = scoreComparator(state.round.playerHandScore,
-                                      state.round.dealerHandScore);
+  const winningHand = scoreComparator(state.round.playerHandScore,
+                                      state.round.dealerHandScore)
 
   // Get current player/dealer round points.
-  var playerPoints = state.game.playerPoints,
-      dealerPoints = state.game.dealerPoints,
-      roundWinner;
+  let playerPoints = state.game.playerPoints
+  let dealerPoints = state.game.dealerPoints
+  let roundWinner
 
   // Winning hand returns 'draw' / 1 / 2. 1 and 2 correspond to the order that
   // the hands are passed to the function. So hand 1 is the player's hand, and
   // hand 2 is the dealer's hand.
   if (winningHand.hand === 'draw') {
-    roundWinner = 'draw';
-    playerPoints += pointsForDraw;
-    dealerPoints += pointsForDraw;
+    roundWinner = 'draw'
+    playerPoints += pointsForDraw
+    dealerPoints += pointsForDraw
   }
   if (winningHand.hand === 1) {
-    roundWinner = 'player';
-    if (winningHand.blackjack) playerPoints += pointsForBlackjack;
-    else playerPoints += pointsForWin;
+    roundWinner = 'player'
+    if (winningHand.blackjack) playerPoints += pointsForBlackjack
+    else playerPoints += pointsForWin
   }
   if (winningHand.hand === 2) {
-    roundWinner = 'dealer';
-    if (winningHand.blackjack) dealerPoints += pointsForBlackjack;
-    else dealerPoints += pointsForWin;
+    roundWinner = 'dealer'
+    if (winningHand.blackjack) dealerPoints += pointsForBlackjack
+    else dealerPoints += pointsForWin
   }
 
   // Update the round state.
   state.round = assign(state.round, {
     roundWinner: roundWinner,
     stage: RoundStages.ROUND_ENDED
-  });
+  })
 
   // Update the game state.
   state.game = assign(state.game, {
     playerPoints: playerPoints,
     dealerPoints: dealerPoints
-  });
+  })
 
   // Determine whether the game has ended and if so who won.
   if (state.game.currentRound >= state.game.roundsPerGame) {
-    state.game.gameOver = true;
+    state.game.gameOver = true
     if (state.game.dealerPoints === state.game.playerPoints) {
-      state.game.gameWinner = 'Draw';
+      state.game.gameWinner = 'Draw'
     }
     else if (state.game.dealerPoints > state.game.playerPoints) {
-      state.game.gameWinner = 'Dealer';
+      state.game.gameWinner = 'Dealer'
     }
     else if (state.game.dealerPoints < state.game.playerPoints) {
-      state.game.gameWinner = 'Player';
+      state.game.gameWinner = 'Player'
     }
   }
 
   // Emit a change event.
-  GameStore.emitChange();
-};
+  GameStore.emitChange()
+}
 
-var GameStore = assign({}, EventEmitter.prototype, {
+let GameStore = assign({}, EventEmitter.prototype, {
 
   /**
    * Get the full game state.
    * @return {object}
    */
   getState() {
-    return state;
+    return state
   },
 
   /**
    * Used in the functions above to trigger an update to the UI.
    */
   emitChange() {
-    this.emit(CHANGE_EVENT);
+    this.emit(CHANGE_EVENT)
   },
 
   /**
    * @param {function} callback
    */
   addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
+    this.on(CHANGE_EVENT, callback)
   },
 
   /**
    * @param {function} callback
    */
   removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
+    this.removeListener(CHANGE_EVENT, callback)
   }
-});
+})
 
 // Register callback to handle all updates
-AppDispatcher.register(function(action) {
-  switch(action.actionType) {
+AppDispatcher.register((action) => {
+  switch (action.actionType) {
     case GameConstants.NEW_GAME:
-      newGame();
-      break;
+      newGame()
+      break
 
     case GameConstants.NEW_ROUND:
-      newRound();
-      break;
+      newRound()
+      break
 
     case GameConstants.PLAYER_ACTION_HIT:
-      playerHit();
-      break;
+      playerHit()
+      break
 
     case GameConstants.PLAYER_ACTION_STAND:
-      playerStand();
-      break;
+      playerStand()
+      break
 
     default:
   }
-});
+})
 
-module.exports = GameStore;
+module.exports = GameStore
