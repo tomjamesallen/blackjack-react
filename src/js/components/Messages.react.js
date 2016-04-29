@@ -3,7 +3,7 @@ var React = require('react');
 var classNames = require('classnames');
 var titleCase = require('../helpers/titleCase');
 
-var GameActions = require('../actions/GameActions');
+import GameActions from '../actions/GameActions'
 var RoundStages = require('../constants/RoundStages');
 
 var Display = require('./helpers/Display.react');

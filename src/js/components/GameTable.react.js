@@ -1,48 +1,52 @@
-var React = require('react');
+import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 
-var classNames = require('classnames');
+import GameTableActorRow from './GameTableActorRow.react'
+import GameTableMiddle from './GameTableMiddle.react'
 
-var Hand = require('./Hand.react');
-var HandScore = require('./HandScore.react');
-var GameTableActorRow = require('./GameTableActorRow.react');
-var GameTableMiddle = require('./GameTableMiddle.react');
+let GameTable = React.createClass({
+  propTypes: {
+    state: PropTypes.object.isRequired
+  },
 
-module.exports = React.createClass({
-  
-  /**
-   * @return {object}
-   */
   render() {
+    const { state } = this.props
+    const { round } = state
 
-    var state = this.props.state;
-    var round = state.round;
-    var game = state.game;
-
-    var classes = classNames(
+    const classes = classNames(
       'game-table',
       'game-table--stage-' + (round.stage || 'no-round')
-    );
+    )
 
     return (
       <div className={classes}>
         <div
-          className="game-table__row
-                     game-table__row--dealer-row">
-          <GameTableActorRow round={round} actor="dealer"/>
+          className={classNames(
+            'game-table__row',
+            'game-table__row--dealer-row'
+          )}
+        >
+          <GameTableActorRow round={round} actor='dealer' />
         </div>
         <div
-          className="game-table__row
-                     game-table__row--middle-row">
-
-          <GameTableMiddle state={state}/>
+          className={classNames(
+            'game-table__row',
+            'game-table__row--middle-row'
+          )}
+        >
+          <GameTableMiddle state={state} />
         </div>
         <div
-          className="game-table__row
-                     game-table__row--player-row">
-          <GameTableActorRow round={round} actor="player"/>
+          className={classNames(
+            'game-table__row',
+            'game-table__row--player-row'
+          )}
+        >
+          <GameTableActorRow round={round} actor='player' />
         </div>
       </div>
-    );
+    )
   }
+})
 
-});
+module.exports = GameTable

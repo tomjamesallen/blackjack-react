@@ -1,13 +1,10 @@
-var React = require('react');
+import React from 'react'
 
-var GameStore = require('../stores/GameStore');
-var GameActions = require('../actions/GameActions');
-var RoundStages = require('../constants/RoundStages');
+import GameStore from '../stores/GameStore'
 
-var Display = require('./helpers/Display.react');
-var Header = require('./Header.react');
-var GameTable = require('./GameTable.react');
-var Footer = require('./Footer.react');
+import Header from './Header.react'
+import GameTable from './GameTable.react'
+import Footer from './Footer.react'
 
 /**
  * Get application state.
@@ -21,15 +18,15 @@ function getAllState() {
 var APP = React.createClass({
 
   getInitialState() {
-    return getAllState();
+    return getAllState()
   },
 
   componentDidMount() {
-    GameStore.addChangeListener(this._onChange);
+    GameStore.addChangeListener(this._onChange)
   },
 
   componentWillUnmount() {
-    GameStore.removeChangeListener(this._onChange);
+    GameStore.removeChangeListener(this._onChange)
   },
 
   /**
@@ -38,20 +35,20 @@ var APP = React.createClass({
    */
   render() {
     return (
-      <div className="blackjack-app">
-        <Header state={this.state}/>
-        <GameTable state={this.state}/>
-        <Footer/>       
+      <div className='blackjack-app'>
+        <Header state={this.state} />
+        <GameTable state={this.state} />
+        <Footer />
       </div>
-    );
+    )
   },
 
   /**
    * Event handler for 'change' events coming from the GameStore
    */
   _onChange() {
-    this.setState(getAllState());
+    this.setState(getAllState())
   }
-});
+})
 
-module.exports = APP;
+module.exports = APP

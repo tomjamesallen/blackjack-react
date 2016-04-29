@@ -1,17 +1,17 @@
-var React = require('react');
+import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 
-var RoundStages = require('../constants/RoundStages');
+import RoundStages from '../constants/RoundStages'
 
-var Card = require('./Card.react');
+import Card from './Card.react'
 
-module.exports = React.createClass({
+let Hand = React.createClass({
   
   /**
    * @return {object}
    */
   render() {
-
-    if (!this.props.handScore) return <div></div>;
+    if (!this.props.handScore) return null;
 
     var that = this;
     var lowAces = this.props.handScore.lowAces;
@@ -52,5 +52,6 @@ module.exports = React.createClass({
       </div>
     );
   }
+})
 
-});
+module.exports = Hand
