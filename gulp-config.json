@@ -1,0 +1,33 @@
+{
+  "distRoot": "./dist",
+  "js": {
+    "src": "./src/js/app-main.js",
+    "toWatch": [
+      "src/js/**",
+      "!src/js/vendor/**"
+    ],
+    "outputFileName": "bundle.js",
+    "outputDir": "./dist/js"
+  },
+  "html": {
+    "src": "./src/index.html",
+    "toWatch": [
+      "./src/index.html",
+      "./src/includes/**"
+    ],
+    "outputFileName": "index.html",
+    "outputDir": "./dist/"
+  },
+  "scss": {
+    "src": "./src/scss/main.scss",
+    "toWatch": [
+      "src/scss/**"
+    ],
+    "outputFileName": "main.css",
+    "outputDir": "./dist/css"
+  },
+  "public": {
+    "src": "./src/public/**",
+    "outputDir": "./dist/"
+  }
+}
