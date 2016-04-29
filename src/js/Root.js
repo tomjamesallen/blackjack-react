@@ -17,7 +17,7 @@ export default class Root extends Component {
     return (
       <Router history={history}>
         <Route name='home' path='/' component={BlackjackApp}>
-          <IndexRoute/>
+          <IndexRoute />
         </Route>
       </Router>
     )
