@@ -74,6 +74,9 @@ See `gulpfile.js` for more detail on which sub-tasks each top level task is runn
 
 ______
 
+This project is built on top of [react-flux-boilerplate][boilerplate].
+______
+
 Tom Allen
 [tomjamesallen.co.uk](http://tomjamesallen.co.uk)
 tomjamesallenweb@gmail.com
@@ -91,3 +94,7 @@ tomjamesallenweb@gmail.com
 [Font]: https://typekit.com/fonts/didoni-urw
 
 [Playing Cards]: http://www.visualnews.com/2014/09/28/art-deco-alice-in-wonderland-playing-cards-from-turnstyle
+
+[gulp]: https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md
+
+[boilerplate]: https://github.com/tomjamesallen/react-flux-boilerplate
