@@ -77,8 +77,8 @@ ______
 This project is built on top of [react-flux-boilerplate][boilerplate].
 ______
 
-Tom Allen
-[tomjamesallen.co.uk](http://tomjamesallen.co.uk)
+Tom Allen   
+[tomjamesallen.co.uk](http://tomjamesallen.co.uk)   
 tomjamesallenweb@gmail.com
 
 
